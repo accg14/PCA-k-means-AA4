@@ -24,7 +24,8 @@ def init_random_centroids(n_clusters):
   return random_centroids
 
 
-#def init_heuristic_centroids(n_clusters):
+def silhoutte_score(clusters):
+  return 1
 
 def init_empty_clusters(n_clusters):
   clusters = {}
@@ -67,7 +68,9 @@ def k_means(n_clusters, init_centroids):
   else:
     centroids = init_heuristic_centroids(n_clusters)
 
+  iterations = 0
   while True:
+    iterations += 1
     clusters = add_to_nearest_cluster(centroids, dataset)
     new_centroids = recalculate_centroids(clusters, n_clusters)
     if centroids == new_centroids:
@@ -75,6 +78,7 @@ def k_means(n_clusters, init_centroids):
     else:
       centroids = new_centroids.copy()
 
+  print('Total iterations: ', iterations)
   return clusters
 
 if __name__ == "__main__":
