@@ -35,20 +35,17 @@ def init_empty_clusters(n_clusters):
 
 def add_to_nearest_cluster(centroids, dataset):
   clusters = init_empty_clusters(len(centroids.keys()))
-  print(clusters)
   dataset_list = dataset.apply(lambda x: x.tolist(), axis = 1)
   for i in range(0, len(dataset_list)):
     v = np.array(dataset_list[i])
     distances = []
     for centroid in centroids:
-      u = np.array(centroid)
+      u = np.array(centroids[centroid])
       dist = np.linalg.norm(v-u)
       distances.append(dist)
+
     cluster = distances.index(min(distances))
-    print(cluster)
-    print(type(cluster))
-    tmp = clusters[cluster].append(dataset_list[i])
-    clusters[cluster] = tmp
+    clusters[cluster].append(dataset_list[i])
 
   return clusters
 
