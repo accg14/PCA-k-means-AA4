@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import random
 import sys
+from sklearn import metrics
 
 def init_random_centroids(n_clusters):
   random_centroids = {}
@@ -25,6 +26,8 @@ def init_random_centroids(n_clusters):
 
 
 def silhoutte_score(clusters):
+  X =
+  metrics.silhoutte_score(X, labels, metric = 'euclidean')
   return 1
 
 def init_empty_clusters(n_clusters):
