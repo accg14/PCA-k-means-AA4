@@ -6,47 +6,37 @@ from matplotlib import pyplot as plt
 
 def get_plot_values(value):
     switcher = {
-        # Frente Amplio
-        1: ["s", "blue"],
-        2: ["s", "blue"],
-        3: ["s", "blue"],
-        4: ["s", "blue"],
-        # Partido Nacional
-        5: ["^", "lightblue"],
-        6: ["^", "lightblue"],
-        7: ["^", "lightblue"],
-        8: ["^", "lightblue"],
-        9: ["^", "lightblue"],
-        10: ["^", "lightblue"],
-        11: ["^", "lightblue"],
-        # Partido Colorado
-        12: ["o", "red"],
-        13: ["o", "red"],
-        14: ["o", "red"],
-        15: ["o", "red"],
-        16: ["o", "red"],
-        17: ["o", "red"],
-        # La Alternativa
-        18: ["d", "purple"],
-        # Unidad Popular
-        19: ["+", "black"],
-        # Partido de la Gente
-        20: ["*", "green"],
-        # PERI
-        21: ["x", "orange"],
-        # Partido de los Trabajadores
-        22: ["D", "yellow"],
-        # Partido Digital
-        23: ["X", "lightgreen"],
-        # Partido Verde
-        24: ["1", "brown"],
-        # Partido de Todos
-        25: ["P", "grey"],
+        1: ["s", "blue", "Frente Amplio"],
+        2: ["s", "blue", "Frente Amplio"],
+        3: ["s", "blue", "Frente Amplio"],
+        4: ["s", "blue", "Frente Amplio"],
+        5: ["^", "lightblue", "Partido Nacional"],
+        6: ["^", "lightblue", "Partido Nacional"],
+        7: ["^", "lightblue", "Partido Nacional"],
+        8: ["^", "lightblue", "Partido Nacional"],
+        9: ["^", "lightblue", "Partido Nacional"],
+        10: ["^", "lightblue", "Partido Nacional"],
+        11: ["^", "lightblue", "Partido Nacional"],
+        12: ["o", "red", "Partido Colorado"],
+        13: ["o", "red", "Partido Colorado"],
+        14: ["o", "red", "Partido Colorado"],
+        15: ["o", "red", "Partido Colorado"],
+        16: ["o", "red", "Partido Colorado"],
+        17: ["o", "red", "Partido Colorado"],
+        18: ["d", "purple", "La Alternativa"],
+        19: ["+", "black", "Unidad Popular"],
+        20: ["*", "green", "Partido de la Gente"],
+        21: ["x", "orange", "PERI"],
+        22: ["D", "yellow", "Partido de los Trabajadores"],
+        23: ["X", "lightgreen", "Partido Digital"],
+        24: ["1", "brown", "Partido Verde"],
+        25: ["P", "grey", "Partido de Todos"],
     }
-    len_switcher = len(switcher) + 1
-    shape = switcher.get(value % len_switcher, ["-", "black"])[0]
-    color = switcher.get(value % len_switcher, ["-", "black"])[1]
-    return shape, color
+    switch = value % (len(switcher) + 1)
+    shape = switcher.get(switch, ["-", "black", "Partido Desconocido"])[0]
+    color = switcher.get(switch, ["-", "black", "Partido Desconocido"])[1]
+    party = switcher.get(switch, ["-", "black", "Partido Desconocido"])[2]
+    return shape, color, party
 
 
 # python PCA.py data.csv
@@ -85,9 +75,9 @@ if __name__ == "__main__":
     index = 0
     for candidate in candidates:
         index += candidate
-        shape, color = get_plot_values(value)
+        shape, color, party = get_plot_values(value)
         plt.plot(transformed[0, prev_index:index], transformed[1, prev_index:index],
-                 shape, markersize=7, color=color, alpha=0.5, label=candidate)
+                 shape, markersize=7, color=color, alpha=0.5, label=party + " - " + str(candidate))
         prev_index = index
         value += 1
 
