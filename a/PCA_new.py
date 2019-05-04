@@ -4,28 +4,51 @@ import sys
 from matplotlib import pyplot as plt
 
 
-def get_color(index):
-    switcher = {
-        0: "red",
-        1: "green",
-        2: "blue",
-        3: "yellow",
-        4: "cyan",
-        5: "magenta",
-        6: "black",
-    }
-    max_color = len(switcher)
-    return switcher.get(index % max_color, "black")
+import pdb
 
 
-def get_shape(index):
+def get_plot(index):
     switcher = {
-        0: "o",
-        1: "^",
-        2: "s",
+        1: ["s", "blue"],
+        2: ["s", "blue"],
+        3: ["s", "blue"],
+        4: ["s", "blue"],
+
+        5: ["^", "lightblue"],
+        6: ["^", "lightblue"],
+        7: ["^", "lightblue"],
+        8: ["^", "lightblue"],
+        9: ["^", "lightblue"],
+        10: ["^", "lightblue"],
+        11: ["^", "lightblue"],
+
+        12: ["o", "red"],
+        13: ["o", "red"],
+        14: ["o", "red"],
+        15: ["o", "red"],
+        16: ["o", "red"],
+        17: ["o", "red"],
+
+        18: ["d", "purple"],
+
+        19: ["+", "black"],
+
+        20: ["*", "green"],
+
+        21: ["x", "orange"],
+
+        22: ["D", "yellow"],
+
+        23: ["X", "lightgreen"],
+
+        24: ["1", "brown"],
+
+        25: ["P", "grey"],
     }
-    max_shape = len(switcher)
-    return switcher.get(index % max_shape, "o")
+    len_switcher = len(switcher) + 1
+    shape = switcher.get(index % len_switcher, ["-", "black"])[0]
+    color = switcher.get(index % len_switcher, ["-", "black"])[1]
+    return shape, color
 
 
 # python PCA.py data.csv
@@ -59,21 +82,21 @@ if __name__ == "__main__":
 
     transformed = np.dot(datamatrix.T, matrix_w).transpose()
 
+    pdb.set_trace()
+
+    counter = 1
+    prev_index = 0
     index = 0
-    counter = 0
     for candidate in candidates:
-        if not (index):
-            plt.plot(transformed[0, 0:int(candidate)], transformed[1, 0:int(
-                candidate)], get_shape(index), markersize=7, color=get_color(counter), alpha=0.5, label=candidate)
-            prev_candidate = candidate
-        else:
-            plt.plot(transformed[0, int(prev_candidate):int(candidate)], transformed[1, int(
-                prev_candidate):int(candidate)], get_shape(index), markersize=7, color=get_color(counter), alpha=0.5, label=candidate)
-            prev_candidate = candidate
         index += candidate
+        shape, color = get_plot(counter)
+        plt.plot(transformed[0, prev_index:index], transformed[1, prev_index:index],
+                 shape, markersize=7, color=color, alpha=0.5, label=candidate)
+        prev_index = index
         counter += 1
 
     plt.xlabel("x_values")
     plt.ylabel("y_values")
+    plt.legend(loc='upper left')
     plt.title("Instancias transformadas (con etiquetas)")
     plt.show()
