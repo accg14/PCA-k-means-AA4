@@ -26,9 +26,15 @@ def init_random_centroids(n_clusters):
 
 
 def silhoutte_score(clusters):
-  X =
-  metrics.silhoutte_score(X, labels, metric = 'euclidean')
-  return 1
+  X = []
+  labels = []
+  for k in clusters:
+    X.extend(clusters[k])
+    for i in range (0, len(clusters[k])):
+      labels.append(k) 
+  sil_score = metrics.silhouette_score(X, labels, metric = 'euclidean')
+  #print(sil_score)
+  return sil_score
 
 def init_empty_clusters(n_clusters):
   clusters = {}
@@ -68,8 +74,8 @@ def k_means(n_clusters, init_centroids):
 
   if init_centroids == 'random':
     centroids = init_random_centroids(n_clusters)
-  else:
-    centroids = init_heuristic_centroids(n_clusters)
+  #else:
+  #centroids = init_heuristic_centroids(n_clusters)
 
   iterations = 0
   while True:
@@ -89,4 +95,6 @@ if __name__ == "__main__":
   init_centroids = sys.argv[2]
 
   clusters = k_means(n_clusters, init_centroids)
-  print(clusters)
+  #print(clusters)
+  silh_score_reached = silhoutte_score(clusters)
+  print("Silhouette score reached: " + str(silh_score_reached))
