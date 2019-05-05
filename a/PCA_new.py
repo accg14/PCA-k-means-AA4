@@ -77,7 +77,7 @@ if __name__ == "__main__":
         index += candidate
         shape, color, party = get_plot_values(value)
         plt.plot(transformed[0, prev_index:index], transformed[1, prev_index:index],
-                 shape, markersize=7, color=color, alpha=0.5, label=party + " - " + str(candidate))
+                 shape, markersize=7, color=color, alpha=0.5, label=party + " - (" + str(candidate) + ")")
         prev_index = index
         value += 1
 
