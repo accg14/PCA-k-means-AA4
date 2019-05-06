@@ -33,8 +33,43 @@ def silhoutte_score(clusters):
     for i in range (0, len(clusters[k])):
       labels.append(k) 
   sil_score = metrics.silhouette_score(X, labels, metric = 'euclidean')
-  #print(sil_score)
   return sil_score
+
+def ARI_score(clusters):
+  dataset = pd.read_csv('data.csv')
+  candidates_ids = dataset.iloc[:, 1].sort_values().tolist()
+  labels_true = [0]
+  for candidate_id in candidates_ids:
+    if candidate_id < 5:
+      labels_true.append(0)
+    elif candidate_id < 12:
+      labels_true.append(1)
+    elif candidate_id < 18:
+      labels_true.append(2)
+    elif candidate_id == 18:
+      labels_true.append(3)
+    elif candidate_id == 19:
+      labels_true.append(4)
+    elif candidate_id == 20:
+      labels_true.append(5)
+    elif candidate_id == 21:
+      labels_true.append(6)
+    elif candidate_id == 22:
+      labels_true.append(7)
+    elif candidate_id == 23:
+      labels_true.append(8)
+    elif candidate_id == 24:
+      labels_true.append(9)
+    elif candidate_id == 25:
+      labels_true.append(10) 
+  labels_pred = []
+  for k in clusters:
+    print(k)
+    for i in range (0, len(clusters[k])):
+      labels_pred.append(k)
+  import pdb; pdb.set_trace()
+  ari_score = metrics.adjusted_rand_score(labels_true, labels_pred) 
+  print(ari_score)
 
 def init_empty_clusters(n_clusters):
   clusters = {}
@@ -68,15 +103,12 @@ def recalculate_centroids(clusters, n_clusters):
 
   return new_centroids
 
-def k_means(n_clusters, init_centroids):
+def k_means(n_clusters):
   dataset = pd.read_csv('data.csv')
   dataset = dataset.iloc[:, range(2,28)]
 
-  if init_centroids == 'random':
-    centroids = init_random_centroids(n_clusters)
-  #else:
-  #centroids = init_heuristic_centroids(n_clusters)
-
+  centroids = init_random_centroids(n_clusters)
+  
   iterations = 0
   while True:
     iterations += 1
@@ -92,9 +124,9 @@ def k_means(n_clusters, init_centroids):
 
 if __name__ == "__main__":
   n_clusters = int(sys.argv[1])
-  init_centroids = sys.argv[2]
 
-  clusters = k_means(n_clusters, init_centroids)
-  #print(clusters)
+  clusters = k_means(n_clusters)
+
   silh_score_reached = silhoutte_score(clusters)
   print("Silhouette score reached: " + str(silh_score_reached))
+  ARI_score(clusters)
