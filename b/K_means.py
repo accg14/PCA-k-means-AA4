@@ -31,7 +31,7 @@ def silhoutte_score(clusters):
   for k in clusters:
     X.extend(clusters[k])
     for i in range (0, len(clusters[k])):
-      labels.append(k) 
+      labels.append(k)
   sil_score = metrics.silhouette_score(X, labels, metric = 'euclidean')
   return sil_score
 
@@ -61,15 +61,13 @@ def ARI_score(clusters):
     elif candidate_id == 24:
       labels_true.append(9)
     elif candidate_id == 25:
-      labels_true.append(10) 
+      labels_true.append(10)
   labels_pred = []
   for k in clusters:
-    print(k)
     for i in range (0, len(clusters[k])):
       labels_pred.append(k)
-  import pdb; pdb.set_trace()
-  ari_score = metrics.adjusted_rand_score(labels_true, labels_pred) 
-  print(ari_score)
+  ari_score = metrics.adjusted_rand_score(labels_true, labels_pred)
+  return ari_score
 
 def init_empty_clusters(n_clusters):
   clusters = {}
@@ -108,7 +106,7 @@ def k_means(n_clusters):
   dataset = dataset.iloc[:, range(2,28)]
 
   centroids = init_random_centroids(n_clusters)
-  
+
   iterations = 0
   while True:
     iterations += 1
@@ -129,4 +127,6 @@ if __name__ == "__main__":
 
   silh_score_reached = silhoutte_score(clusters)
   print("Silhouette score reached: " + str(silh_score_reached))
-  ARI_score(clusters)
+
+  ari_score_reached = ARI_score(clusters)
+  print("ARI score reached: " + str(ari_score_reached))
