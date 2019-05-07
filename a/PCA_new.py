@@ -3,6 +3,8 @@ import pandas as pd
 import sys
 from matplotlib import pyplot as plt
 
+import pdb
+
 
 def get_plot_values(value):
     switcher = {
@@ -36,7 +38,24 @@ def get_plot_values(value):
     shape = switcher.get(switch, ["-", "black", "Partido Desconocido"])[0]
     color = switcher.get(switch, ["-", "black", "Partido Desconocido"])[1]
     party = switcher.get(switch, ["-", "black", "Partido Desconocido"])[2]
-    return shape, color, party
+    return "+", color, party
+
+
+def get_subplot_position(value):
+    if (value in range(1, 5)):
+        return 1
+    elif (value in range(5, 12)):
+        return 4
+    elif (value in range(12, 18)):
+        return 5
+    elif (value == 18):
+        return 2
+    elif (value == 19 or value == 22):
+        return 3
+    elif (value == 20):
+        return 6
+    else:
+        return 7
 
 
 # python PCA.py data.csv
@@ -62,6 +81,8 @@ if __name__ == "__main__":
     eig_pairs = [(np.abs(eig_val_cov[i]), eig_vec_cov[:, i])
                  for i in range(len(eig_val_cov))]
 
+    pdb.set_trace()
+
     eig_pairs.sort()
     eig_pairs.reverse()
 
@@ -75,14 +96,19 @@ if __name__ == "__main__":
     index = 0
     for candidate in candidates:
         index += candidate
+        plt.subplot(330 + get_subplot_position(value))
         shape, color, party = get_plot_values(value)
+        if (party != 30):
+            plt.title(party)
+        else:
+            plt.title("Otros")
         plt.plot(transformed[0, prev_index:index], transformed[1, prev_index:index],
                  shape, markersize=7, color=color, alpha=0.5, label=party + " - (" + str(candidate) + ")")
         prev_index = index
+        # plt.xlabel("x_values")
+        # plt.ylabel("y_values")
+        #plt.legend(loc='upper left')
         value += 1
+    plt.subplots_adjust(hspace=0.75, wspace=0.35)
 
-    plt.xlabel("x_values")
-    plt.ylabel("y_values")
-    plt.legend(loc='upper left')
-    plt.title("Instancias transformadas (con etiquetas)")
     plt.show()
