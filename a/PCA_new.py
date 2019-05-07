@@ -3,10 +3,9 @@ import pandas as pd
 import sys
 from matplotlib import pyplot as plt
 
-import pdb
 
-
-def get_plot_values(value):
+def get_plot_values(value, unicity):
+    dummy = ["-", "black", "Partido Desconocido"]
     switcher = {
         1: ["s", "blue", "Frente Amplio"],
         2: ["s", "blue", "Frente Amplio"],
@@ -35,27 +34,30 @@ def get_plot_values(value):
         25: ["P", "grey", "Partido de Todos"],
     }
     switch = value % (len(switcher) + 1)
-    shape = switcher.get(switch, ["-", "black", "Partido Desconocido"])[0]
-    color = switcher.get(switch, ["-", "black", "Partido Desconocido"])[1]
-    party = switcher.get(switch, ["-", "black", "Partido Desconocido"])[2]
-    return "+", color, party
+    shape = switcher.get(switch, dummy)[0]
+    color = switcher.get(switch, dummy)[1]
+    party = switcher.get(switch, dummy)[2]
+    if (unicity):
+        return shape, color, party
+    else:
+        return "+", color, party
 
 
 def get_subplot_position(value):
-    if (value in range(1, 5)):
-        return 1
-    elif (value in range(5, 12)):
-        return 4
-    elif (value in range(12, 18)):
-        return 5
+    if (value < 5):
+        return 1, "Frente Amplio"
+    elif (value < 12):
+        return 4, "Partido Nacional"
+    elif (value < 18):
+        return 5, "Partido Colorado"
     elif (value == 18):
-        return 2
+        return 2, "La Alternativa"
     elif (value == 19 or value == 22):
-        return 3
+        return 3, "Unidad Popular - Partido de los Trabajadores"
     elif (value == 20):
-        return 6
+        return 6, "Partido de la Gente"
     else:
-        return 7
+        return 7, "Otros"
 
 
 # python PCA.py data.csv
@@ -81,8 +83,6 @@ if __name__ == "__main__":
     eig_pairs = [(np.abs(eig_val_cov[i]), eig_vec_cov[:, i])
                  for i in range(len(eig_val_cov))]
 
-    pdb.set_trace()
-
     eig_pairs.sort()
     eig_pairs.reverse()
 
@@ -94,20 +94,17 @@ if __name__ == "__main__":
     value = 1
     prev_index = 0
     index = 0
+    unicity = bool(int(sys.argv[2]))
     for candidate in candidates:
         index += candidate
-        plt.subplot(330 + get_subplot_position(value))
-        shape, color, party = get_plot_values(value)
-        if (party != 30):
-            plt.title(party)
-        else:
-            plt.title("Otros")
+        shape, color, party = get_plot_values(value, unicity)
+        if not (unicity):
+            position, title = get_subplot_position(value)
+            plt.subplot(330 + position)
+            plt.title(title)
         plt.plot(transformed[0, prev_index:index], transformed[1, prev_index:index],
                  shape, markersize=7, color=color, alpha=0.5, label=party + " - (" + str(candidate) + ")")
         prev_index = index
-        # plt.xlabel("x_values")
-        # plt.ylabel("y_values")
-        #plt.legend(loc='upper left')
         value += 1
     plt.subplots_adjust(hspace=0.75, wspace=0.35)
 
