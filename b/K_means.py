@@ -108,7 +108,7 @@ def k_means(n_clusters):
   centroids = init_random_centroids(n_clusters)
 
   iterations = 0
-  while True:
+  while iterations < 999:
     iterations += 1
     clusters = add_to_nearest_cluster(centroids, dataset)
     new_centroids = recalculate_centroids(clusters, n_clusters)
@@ -117,16 +117,19 @@ def k_means(n_clusters):
     else:
       centroids = new_centroids.copy()
 
-  print('Total iterations: ', iterations)
-  return clusters
+  return clusters, iterations
 
 if __name__ == "__main__":
   n_clusters = int(sys.argv[1])
 
-  clusters = k_means(n_clusters)
+  clusters, iterations = k_means(n_clusters)
 
-  silh_score_reached = silhoutte_score(clusters)
-  print("Silhouette score reached: " + str(silh_score_reached))
+  if iterations != 999:
+    print('Total iterations: ', iterations)
+    silh_score_reached = silhoutte_score(clusters)
+    print("Silhouette score reached: " + str(silh_score_reached))
 
-  ari_score_reached = ARI_score(clusters)
-  print("ARI score reached: " + str(ari_score_reached))
+    ari_score_reached = ARI_score(clusters)
+    print("ARI score reached: " + str(ari_score_reached))
+  else:
+    print("Limit of iterations reached")
