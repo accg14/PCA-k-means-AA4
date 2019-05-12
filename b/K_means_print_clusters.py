@@ -1,13 +1,3 @@
-'''Algoritmo k-Means
-1. Seleccionar el número de k grupos (clusters)
-2. Generar aleatoriamente k puntos que llamaremos centroides
-3. Asignar cada elemento del conjunto de datos al centroide más cercano para
-   formar k grupos
-4. Reasignar la posición de cada centroide
-5. Reasignar los elementos de datos al centroide más cercano nuevamente
-   5.1 Si hubo elementos que se asignaron a un centroide distinto al original,
-   regresar al paso 4, de lo contrario, el proceso ha terminado'''
-
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -117,19 +107,24 @@ def k_means(n_clusters):
     else:
       centroids = new_centroids.copy()
 
-  return clusters, iterations
+  #print('Total iterations: ', iterations)
+  return clusters
+
+def print_clusters(clusters):
+  for key in clusters:
+    key2 = key + 1
+    for i in range(0, len(clusters[key])):
+      clusters[key][i].insert(0, key2)
+      print(clusters[key][i])
 
 if __name__ == "__main__":
   n_clusters = int(sys.argv[1])
 
-  clusters, iterations = k_means(n_clusters)
+  clusters = k_means(n_clusters)
+  print_clusters(clusters)
 
-  if iterations != 999:
-    print('Total iterations: ', iterations)
-    silh_score_reached = silhoutte_score(clusters)
-    print("Silhouette score reached: " + str(silh_score_reached))
+  #silh_score_reached = silhoutte_score(clusters)
+  #print("Silhouette score reached: " + str(silh_score_reached))
 
-    ari_score_reached = ARI_score(clusters)
-    print("ARI score reached: " + str(ari_score_reached))
-  else:
-    print("Limit of iterations reached")
+  #ari_score_reached = ARI_score(clusters)
+  #print("ARI score reached: " + str(ari_score_reached))

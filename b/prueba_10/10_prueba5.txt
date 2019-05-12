@@ -1,0 +1,3 @@
+Total iterations:  109
+Silhouette score reached: 0.05632660259757493
+ARI score reached: 0.3521874208366633
