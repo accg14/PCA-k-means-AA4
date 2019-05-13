@@ -64,7 +64,7 @@ def get_subplot_position(value):
         return 7, "Otros"
 
 
-# python PCA.py data.csv
+# python PCA.py data.csv 2 1
 # dataset filename: "data.csv"
 if __name__ == "__main__":
     dataset = pd.read_csv(sys.argv[1], delimiter=",")

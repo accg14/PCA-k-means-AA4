@@ -11,17 +11,17 @@ np.set_printoptions(suppress=True, precision=3)
 def get_plot_values(value, unicity):
     dummy = ["-", "black", "Partido Desconocido"]
     switcher = {
-        1: ["s", "blue", "Frente Amplio"],
-        2: ["o", "red", "Partido Colorado"],
-        3: ["^", "lightblue", "Partido Nacional"],
-        4: ["d", "purple", "La Alternativa"],
-        5: ["+", "black", "Unidad Popular"],
-        6: ["*", "green", "Partido de la Gente"],
-        7: ["x", "orange", "PERI"],
-        8: ["D", "yellow", "Partido de los Trabajadores"],
-        9: ["X", "lightgreen", "Partido Digital"],
-        10: ["1", "brown", "Partido Verde"],
-        11: ["P", "grey", "Partido de Todos"],
+        1: ["s", "blue", "Clúster 1"],
+        2: ["o", "red", "Clúster 2"],
+        3: ["^", "lightblue", "Clúster 3"],
+        4: ["d", "purple", "Clúster 4"],
+        5: ["+", "black", "Clúster 5"],
+        6: ["*", "green", "Clúster 6"],
+        7: ["x", "orange", "Clúster 7"],
+        8: ["D", "yellow", "Clúster 8"],
+        9: ["X", "lightgreen", "Clúster 9"],
+        10: ["1", "brown", "Clúster 10"],
+        11: ["P", "grey", "Clúster 11"],
     }
     switch = value % (len(switcher) + 1)
     shape = switcher.get(switch, dummy)[0]
@@ -54,11 +54,9 @@ def get_subplot_position(value):
         return 9, "9"
 
 
-# python PCA.py data.csv
-# dataset filename: "data.csv"
+# python PCA_plot_clusters.py x.txt 2 1
 if __name__ == "__main__":
     dataset = pd.read_csv(sys.argv[1], delimiter=",")
-    #dataset = dataset.iloc[:, range(1, 28)].sort_values(by=["candidatoId"])
     candidates = dataset["candidatoId"].value_counts().sort_index()
     dataset = dataset.iloc[:, range(1, 27)]
 
